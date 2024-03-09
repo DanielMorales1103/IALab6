@@ -1,3 +1,11 @@
+'''
+Para el tablero se utilizó una inteligencia artifical (Chat GPT) para generar la base, con el resultado obtenido se editaron
+ciertos parámetros para obter el resultado deseado. 
+Promnt: 
+Necesito realizar el juego de Connect Four en python, ayúdame a generar el tablero para poder visualizarlo, estaré utilizando 
+la librería de pygame. 
+'''
+
 import pygame
 import math
 import sys
