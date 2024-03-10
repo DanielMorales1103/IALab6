@@ -142,15 +142,12 @@ def check_diagonal_win(board, piece):
     return False
 
 def winning_move(board, piece):
-    # Revisar por ubicaciones horizontales ganadoras
     if check_horizontal_win(board, piece):
         return True
 
-    # Revisar por ubicaciones verticales ganadoras
     if check_vertical_win(board, piece):
         return True
 
-    # Revisar las ubicaciones diagonales ganadoras
     if check_diagonal_win(board, piece):
         return True
 
@@ -169,13 +166,13 @@ def minimax(board, depth, alpha, beta, maximizingPlayer):
     if depth == 0 or is_terminal_node(board):
         if is_terminal_node(board):
             if winning_move(board, AI_PIECE):
-                return (None, float("inf"))  # Retornar un valor infinito para una victoria
+                return (None, float("inf")) 
             elif winning_move(board, PLAYER_PIECE):
                 return (None, float("-inf"))  # Retornar un valor infinito negativo para una derrota
-            else:  # El juego ha terminado sin más movimientos válidos
+            else: 
                 return (None, 0)
-        else:  # La profundidad es cero
-            return (None, 0)  # Modificado para no usar score_position
+        else:  
+            return (None, 0)  
 
     if maximizingPlayer:
         value = -math.inf
@@ -211,9 +208,9 @@ def minimax(board, depth, alpha, beta, maximizingPlayer):
 def minimax_simple(board, depth, maximizingPlayer):
     if depth == 0 or is_terminal_node(board):
         if is_terminal_node(board):
-            if winning_move(board, AI_PIECE):  # Suponiendo que AI_PIECE es la IA2
+            if winning_move(board, AI_PIECE): 
                 return (None, float("inf"))
-            elif winning_move(board, PLAYER_PIECE):  # Suponiendo que PLAYER_PIECE es la IA1 o el jugador humano
+            elif winning_move(board, PLAYER_PIECE): 
                 return (None, float("-inf"))
             else:
                 return (None, 0)
@@ -238,7 +235,7 @@ def minimax_simple(board, depth, maximizingPlayer):
         for col in get_valid_locations(board):
             row = get_next_open_row(board, col)
             b_copy = board.copy()
-            drop_piece(b_copy, row, col, PLAYER_PIECE)  # Suponiendo que PLAYER_PIECE representa a la IA1 o al jugador humano
+            drop_piece(b_copy, row, col, PLAYER_PIECE)  
             new_score = minimax_simple(b_copy, depth-1, True)[1]
             if new_score < value:
                 value = new_score
@@ -278,18 +275,16 @@ def main():
                 sys.exit()
 
             if event.type == pygame.MOUSEMOTION and turno_humano:
-                # Mostrar previsualización del movimiento del jugador
+                # prev
                 pass
 
             if event.type == pygame.MOUSEBUTTONDOWN and turno_humano:
-                # Procesar el movimiento del humano
-                col = event.pos[0] // SQUARESIZE
+                col = event.pos[0] // SQUARESIZE #predecir movimiento humao
                 if is_valid_location(board, col):
                     row = get_next_open_row(board, col)
                     drop_piece(board, row, col, PLAYER_PIECE)
                     if winning_move(board, PLAYER_PIECE):
                         game_over = True
-                        # Mostrar mensaje de victoria del jugador
                     turno_humano = False  # Cambiar al turno de la IA
                     draw_board(board)
 
@@ -308,7 +303,6 @@ def main():
 
         # Modo IA vs IA
         if not game_over and modo_juego == "IA vs IA":
-            # Alternar entre Minimax con poda para IA1 y Minimax simple para IA2.
             if turno_humano:  # IA1 juega con Minimax con poda.
                 col, minimax_score = minimax(board, 5, -math.inf, math.inf, True)
             else:  # IA2 juega con Minimax simple (sin poda).
@@ -347,10 +341,12 @@ def main():
             screen.blit(label, (width / 2 - label.get_width() / 2, height / 2 - label.get_height() / 2))
             
             pygame.display.update()
-            pygame.time.wait(7000)  # Espera 7 segundos antes de salir o reiniciar
+            pygame.time.wait(7000) 
 
-            # Aquí puedes agregar la lógica para reiniciar el juego o salir
-            break  # Rompe el bucle si solo deseas terminar el juego
+            break 
 
 if __name__ == "__main__":
     main()
+#Qué hace su agente a nivel general
+#Explique por qué en el juego de IA vs IA, ganó el qué tenía o no la eficiencia de alpha-beta pruning. ¿Cómo
+#afectó el tener o no esta estrategia al agente que ganó?
