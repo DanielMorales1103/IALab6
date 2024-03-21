@@ -4,6 +4,7 @@ import MiniMax
 from QLearning import PlayQlearning
 import matplotlib.pyplot as plt
 
+
 def trainQLearning(trainNum):
     playerQ1 = PlayQlearning(1)
     playerQ2 = PlayQlearning(2)
@@ -91,9 +92,9 @@ def play(player1, player2, loopNum, trainNum, useAlphaBeta):
                     playerQ2.finalResult(board.checkWinner())
 
                 x.append(cnt)
-                player1Win.append(player1WinCount/cnt)
-                player2Win.append(player2WinCount/cnt)
-                tied.append(tiedCount/cnt)
+                player1Win.append(player1WinCount)
+                player2Win.append(player2WinCount)
+                tied.append(tiedCount)
                 break
             else:
                 # second player
@@ -122,34 +123,31 @@ def play(player1, player2, loopNum, trainNum, useAlphaBeta):
                         playerQ2.finalResult(board.checkWinner())
 
                     x.append(cnt)
-                    player1Win.append(player1WinCount/cnt)
-                    player2Win.append(player2WinCount/cnt)
-                    tied.append(tiedCount/cnt)
+                    player1Win.append(player1WinCount)
+                    player2Win.append(player2WinCount)
+                    tied.append(tiedCount)
                     break
-    
-    plt.plot(x,player1Win,color = 'r',label=["Default Win", "Minimax Win", "Q-Learning Win"][player1])
-    plt.plot(x,player2Win,color = 'g',label=["Default Win", "Minimax Win", "Q-Learning Win"][player2])
-    plt.plot(x,tied,color = 'b',label="Tied")
+                
+    outcomes = ['Q-Learning Wins', 'Minimax Wins', 'Ties'] if player1 == 2 else ['Minimax Wins', 'Q-Learning Wins', 'Ties']
+    values = [player1WinCount, player2WinCount, tiedCount] if player1 == 2 else [player2WinCount, player1WinCount, tiedCount]
 
-    plt.xlabel("Game count")
-    plt.ylabel("Probability")
-    plt.legend(loc = "upper right")
+    plt.figure(figsize=(8, 5))
+    plt.bar(outcomes, values, color=['red', 'green', 'blue'])
+    plt.xlabel('Agent')
+    plt.ylabel('Number of Wins/Ties')
+    plt.title('Game Results')
     plt.show()
 
 def configure_and_play():
-    trainNum = 50  # Número de juegos de entrenamiento para Q-learning
+    trainNum = 100  # Número de juegos de entrenamiento para Q-learning
     gameNum = 50   # Número de juegos para jugar
     
     # Juega Q-learning vs. Minimax sin poda alfa-beta
     print("Q-learning vs. Minimax (Sin Poda Alfa-Beta)")
-    play(2, 1, gameNum, trainNum, useAlphaBeta=False) 
+    play(2, 1, 25, trainNum, useAlphaBeta=False) 
     
     # Juega Q-learning vs. Minimax con poda alfa-beta
     print("Q-learning vs. Minimax (Con Poda Alfa-Beta)")
     play(2, 1, gameNum, trainNum, useAlphaBeta=True)
 
 configure_and_play()
-
-
-# # 0: defalt  1: minimax  2:q learning
-# play(2, 1, 1000000, 0)
